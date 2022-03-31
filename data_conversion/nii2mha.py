@@ -11,7 +11,9 @@ import tqdm
 import os
 import sys
 
-def find_studies(path_to_data):  # returns a list of unique study paths within the dataset
+
+def find_studies(path_to_data):
+    # returns a list of unique study paths within the dataset
     dicom_root = plb.Path(path_to_data)
     patient_dirs = list(dicom_root.glob('*'))
 
@@ -20,6 +22,7 @@ def find_studies(path_to_data):  # returns a list of unique study paths within t
         sub_dirs = list(dir.glob('*'))
         study_dirs.extend(sub_dirs)
     return study_dirs
+
 
 def nii_to_mha(nii_path, mha_out_path):
     # conversion for a single file
@@ -66,8 +69,8 @@ def convert_nii_to_mha(study_dirs,path_to_mha_data):
 
 if __name__ == "__main__":
 
-    path_to_nii_data = sys.argv[0] # path to nifti data e.g. .../nifti/FDG-PET-CT-Lesions/
-    path_to_mha_data = sys.argv[1] # output path for mha data ... /mha/FDG-PET-CT-Lesions/ (will be created if non existing)
+    path_to_nii_data = sys.argv[0]  # path to nifti data e.g. .../nifti/FDG-PET-CT-Lesions/
+    path_to_mha_data = sys.argv[1]  # output path for mha data ... /mha/FDG-PET-CT-Lesions/ (will be created if non existing)
     study_dirs = find_studies(path_to_nii_data)
 
-    convert_nii_to_mha(study_dirs,path_to_mha_data)
+    convert_nii_to_mha(study_dirs, path_to_mha_data)

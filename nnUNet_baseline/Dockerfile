@@ -22,7 +22,10 @@ COPY --chown=algorithm:algorithm process.py /opt/algorithm/
 
 RUN mkdir -p /opt/algorithm/checkpoints/nnUNet/
 
-COPY --chown=algorithm:algorithm ../3d_fullres /opt/algorithm/checkpoints/nnUNet/
+# Store your weights in the container
+#COPY --chown=algorithm:algorithm ../3d_fullres /opt/algorithm/checkpoints/nnUNet/
+COPY --chown=algorithm:algorithm weights.zip /opt/algorithm/checkpoints/nnUNet/
+RUN python -c "import zipfile; zipfile.ZipFile('/opt/algorithm/checkpoints/nnUNet/weights.zip').extractall('/opt/algorithm/checkpoints/nnUNet/')"
 
 # nnUNet specific setup
 RUN mkdir -p /opt/algorithm/nnUNet_raw_data_base/nnUNet_raw_data/Task001_TCIA/imagesTs

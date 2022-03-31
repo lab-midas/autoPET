@@ -201,8 +201,8 @@ def convert_tcia_to_nifti(study_dirs,nii_out_root):
 
 
 if __name__ == "__main__":
-    path_to_data = '/mnt/DataFast/ragatis1/TCIA/manifest-1647440690095/FDG-PET-CT-Lesions/'
-    nii_out_root = plb.Path('/mnt/DataFast/ragatis1/TCIA/tcia_nifti/FDG-PET-CT-Lesions/')
+    path_to_data = plb.Path(sys.argv[0])  # path to downloaded TCIA DICOM database, e.g. '...TCIA/manifest-1647440690095/FDG-PET-CT-Lesions/'
+    nii_out_root = plb.Path(sys.argv[1])  # path to the to be created NiFTI files, e.g. '...tcia_nifti/FDG-PET-CT-Lesions/')
 
     study_dirs = find_studies(path_to_data)
     convert_tcia_to_nifti(study_dirs, nii_out_root)
