@@ -1,4 +1,4 @@
-# converts the entire dataset from the .nii.gz format to the .mha format
+# batch converts the entire dataset from the .nii.gz format to the .mha format
 #(the .mha format is required by grand-challenge.org as input and ouput data of algorithms)
 
 # inputs:
@@ -16,21 +16,23 @@ def find_studies(path_to_data):  # returns a list of unique study paths within t
     patient_dirs = list(dicom_root.glob('*'))
 
     study_dirs = []
-
     for dir in patient_dirs:
         sub_dirs = list(dir.glob('*'))
-        #print(sub_dirs)
         study_dirs.extend(sub_dirs)
-        
-        #dicom_dirs = dicom_dirs.append(dir.glob('*'))
     return study_dirs
 
-def nii_to_mha(nii_path, mha_out_path): # converts a .nii.gz file to .mha and saves to a specified path
+def nii_to_mha(nii_path, mha_out_path):
+    # conversion for a single file
+    # nii_path:     path to nii file which should be converted
+    # mha_out_path: path to mha file which should be created
     img = sitk.ReadImage(nii_path)
     sitk.WriteImage(img, mha_out_path, True)
 
 
-def convert_to_mha(study_dirs,path_to_mha_data): # main function converting the entire dataset from .nii.gz to .mha
+def convert_nii_to_mha(study_dirs,path_to_mha_data):
+    # batch conversion of all studies
+    # study_dirs:       list of all study directories
+    # path_to_mha_data: path to mha data which should be created
         
     for study_dir in tqdm.tqdm(study_dirs):
 
@@ -68,4 +70,4 @@ if __name__ == "__main__":
     path_to_mha_data = sys.argv[1] # output path for mha data ... /mha/FDG-PET-CT-Lesions/ (will be created if non existing)
     study_dirs = find_studies(path_to_nii_data)
 
-    convert_to_mha(study_dirs,path_to_mha_data)
+    convert_nii_to_mha(study_dirs,path_to_mha_data)
