@@ -2,4 +2,4 @@
 
 ./build.sh
 
-docker save autopet | gzip -c > autoPET.tar.gz
+docker save autopet_baseline | gzip -c > autoPET_baseline.tar.gz
