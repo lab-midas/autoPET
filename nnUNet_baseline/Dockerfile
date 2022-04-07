@@ -20,6 +20,7 @@ COPY --chown=algorithm:algorithm requirements.txt /opt/algorithm/
 RUN python -m pip install --user -rrequirements.txt
 
 COPY --chown=algorithm:algorithm process.py /opt/algorithm/
+COPY --chown=algorithm:algorithm predict.py /opt/algorithm/
 
 RUN mkdir -p /opt/algorithm/checkpoints/nnUNet/
 
@@ -31,14 +32,9 @@ RUN python -c "import zipfile; zipfile.ZipFile('/opt/algorithm/checkpoints/nnUNe
 RUN mkdir -p /opt/algorithm/nnUNet_raw_data_base/nnUNet_raw_data/Task001_TCIA/imagesTs
 RUN mkdir -p /opt/algorithm/nnUNet_raw_data_base/nnUNet_raw_data/Task001_TCIA/result
 
-
-#RUN ln -sf /input/images /opt/algorithm/nnUNet_raw_data_base/nnUNet_raw_data/Task001_TCIA/imagesTs
-
 ENV nnUNet_raw_data_base="/opt/algorithm/nnUNet_raw_data_base"
 ENV RESULTS_FOLDER="/opt/algorithm/checkpoints"
-
-RUN which python
-RUN which nnUNet_predict
+#ENV MKL_SERVICE_FORCE_INTEL=1
 
 ENTRYPOINT python -m process $0 $@
 
