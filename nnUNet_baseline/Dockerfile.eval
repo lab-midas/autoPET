@@ -1,0 +1,17 @@
+FROM python:3.9-slim
+
+RUN groupadd -r algorithm && useradd -m --no-log-init -r -g algorithm algorithm
+
+WORKDIR /opt/algorithm
+USER algorithm
+
+ENV PATH="/home/algorithm/.local/bin:${PATH}"
+
+RUN python -m pip install --user -U pip
+
+COPY --chown=algorithm:algorithm requirements.txt /opt/algorithm/
+RUN python -m pip install --user numpy
+RUN python -m pip install --user simpleitk
+
+
+

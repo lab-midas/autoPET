@@ -2,7 +2,6 @@
 FROM pytorch/pytorch
 
 
-
 RUN groupadd -r algorithm && useradd -m --no-log-init -r -g algorithm algorithm
 
 RUN mkdir -p /opt/algorithm /input /output \
@@ -18,6 +17,7 @@ RUN python -m pip install --user -U pip
 
 COPY --chown=algorithm:algorithm requirements.txt /opt/algorithm/
 RUN python -m pip install --user -rrequirements.txt
+RUN python -m pip install --user torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu113
 
 COPY --chown=algorithm:algorithm process.py /opt/algorithm/
 COPY --chown=algorithm:algorithm predict.py /opt/algorithm/
@@ -34,7 +34,8 @@ RUN mkdir -p /opt/algorithm/nnUNet_raw_data_base/nnUNet_raw_data/Task001_TCIA/re
 
 ENV nnUNet_raw_data_base="/opt/algorithm/nnUNet_raw_data_base"
 ENV RESULTS_FOLDER="/opt/algorithm/checkpoints"
-#ENV MKL_SERVICE_FORCE_INTEL=1
+ENV MKL_SERVICE_FORCE_INTEL=1
+
 
 ENTRYPOINT python -m process $0 $@
 

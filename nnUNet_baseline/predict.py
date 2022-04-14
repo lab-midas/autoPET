@@ -5,7 +5,10 @@ import numpy as np
 from batchgenerators.augmentations.utils import resize_segmentation
 from nnunet.inference.segmentation_export import save_segmentation_nifti_from_softmax, save_segmentation_nifti
 from batchgenerators.utilities.file_and_folder_operations import *
-from multiprocessing import Process, Queue
+#from multiprocessing import Process, Queue
+from queue import Queue
+
+# from multiprocessing.dummy import Queue
 import torch
 import SimpleITK as sitk
 import shutil
@@ -250,7 +253,7 @@ def predict_cases(model, list_of_lists, output_filenames, folds, save_npz, num_t
                                                             npz_file, None, force_separate_z, interpolation_order_z))
 
     print("inference done. Now waiting for the segmentation export to finish...")
-    _ = [i.get() for i in results]
+    # _ = [i.get() for i in results]
     # now apply postprocessing
     # first load the postprocessing properties if they are present. Else raise a well visible warning
     if not disable_postprocessing:
@@ -265,7 +268,7 @@ def predict_cases(model, list_of_lists, output_filenames, folds, save_npz, num_t
             results.append(load_remove_save(zip(output_filenames, output_filenames,
                                                   [for_which_classes] * len(output_filenames),
                                                   [min_valid_obj_size] * len(output_filenames))))
-            _ = [i.get() for i in results]
+            # _ = [i.get() for i in results]
         else:
             print("WARNING! Cannot run postprocessing because the postprocessing file is missing. Make sure to run "
                   "consolidate_folds in the output folder of the model first!\nThe folder you need to run this in is "
@@ -279,7 +282,7 @@ def preprocess_multithreaded(trainer, list_of_lists, output_files, num_processes
 
     classes = list(range(1, trainer.num_classes))
     assert isinstance(trainer, nnUNetTrainer)
-    q = Queue(1)
+    q = Queue(2)
     preprocess_save_to_queue(trainer.preprocess_patient, q, list_of_lists, output_files, segs_from_prev_stage,
                              classes, trainer.plans['transpose_forward'])
 
@@ -339,6 +342,7 @@ def preprocess_save_to_queue(preprocess_fn, q, list_of_lists, output_files, segs
                     "This output is too large for python process-process communication. "
                     "Saving output temporarily to disk")
                 np.save(output_file[:-7] + ".npy", d)
+                print("Saved")
                 d = output_file[:-7] + ".npy"
             q.put((output_file, (d, dct)))
         except KeyboardInterrupt:

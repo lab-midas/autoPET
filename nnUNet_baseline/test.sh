@@ -12,29 +12,34 @@ docker volume create autopet_baseline-output-$VOLUME_SUFFIX
 
 # Do not change any of the parameters to docker run, these are fixed
 # --gpus="device=0" \
-#docker run --rm \
-#        --memory="${MEM_LIMIT}" \
-#        --memory-swap="${MEM_LIMIT}" \
-#        --network="none" \
-#        --cap-drop="ALL" \
-#        --security-opt="no-new-privileges" \
-#        --shm-size="128m" \
-#        --pids-limit="256" \
-#        -v $SCRIPTPATH/test/input/:/input/ \
-#        -v autopet_baseline-output-$VOLUME_SUFFIX:/output/ \
-#        autopet_baseline
-
-docker run --rm \
+docker run -it --rm \
+        --memory="${MEM_LIMIT}" \
+        --memory-swap="${MEM_LIMIT}" \
+        --network="none" \
+        --cap-drop="ALL" \
+        --security-opt="no-new-privileges" \
+        --shm-size="128m" \
+        --pids-limit="256" \
+        --gpus="all" \
         -v $SCRIPTPATH/test/input/:/input/ \
         -v autopet_baseline-output-$VOLUME_SUFFIX:/output/ \
         autopet_baseline
 
+echo $SCRIPTPATH
+
+#docker  run -it -v $SCRIPTPATH/test/input/:/input/ -v autopet_baseline-output-$VOLUME_SUFFIX:/output/ autopet_baseline
+
+#docker run --rm \
+#        -v $SCRIPTPATH/test/input/:/input/ \
+#        -v autopet_baseline-output-$VOLUME_SUFFIX:/output/ \
+#        autopet_baseline
+
 echo "Evaluation done, checking results"
 
-docker run --rm \
+docker run --rm -it \
         -v autopet_baseline-output-$VOLUME_SUFFIX:/output/ \
         -v $SCRIPTPATH/test/expected_output/:/expected_output/ \
-        biocontainers/simpleitk:v1.0.1-3-deb-py3_cv1 python3 -c """
+        autopet_eval python3 -c """
 import SimpleITK as sitk
 import os
 file = os.listdir('/output/images/automated-petct-lesion-segmentation')[0]

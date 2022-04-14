@@ -2,6 +2,10 @@ import SimpleITK
 import numpy as np
 import time
 import os
+#os.environ["nnUNet_raw_data_base"] = 'opt/algorithm/nnUNet_raw_data_base'
+#os.environ["RESULTS_FOLDER"] = 'opt/algorithm/checkpoints'
+#os.environ["MKL_SERVICE_FORCE_INTEL"] = "1"
+
 import subprocess
 import shutil
 
@@ -192,4 +196,6 @@ class Autopet_baseline():  # SegmentationAlgorithm is not inherited in this clas
 
 
 if __name__ == "__main__":
+    print("START")
+
     Autopet_baseline().process()
