@@ -6,10 +6,11 @@ SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 ./build.sh
 
 VOLUME_SUFFIX=$(dd if=/dev/urandom bs=32 count=1 | md5sum | cut --delimiter=' ' --fields=1)
-MEM_LIMIT="32g"  # Maximum is currently 30g, configurable in your algorithm image settings on grand challenge
+MEM_LIMIT="30g"  # Maximum is currently 30g, configurable in your algorithm image settings on grand challenge
 
 docker volume create autopet_baseline-output-$VOLUME_SUFFIX
 
+echo "Volume created, running evaluation"
 # Do not change any of the parameters to docker run, these are fixed
 # --gpus="device=0" \
 docker run -it --rm \

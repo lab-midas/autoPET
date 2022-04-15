@@ -1,5 +1,4 @@
 import SimpleITK
-import numpy as np
 import time
 import os
 #os.environ["nnUNet_raw_data_base"] = 'opt/algorithm/nnUNet_raw_data_base'
@@ -38,6 +37,7 @@ class Autopet_baseline():  # SegmentationAlgorithm is not inherited in this clas
         #self.nii_path = '/home/rakuest1/nnUNet_baseline/nnUNet_raw_data_base/nnUNet_raw_data/Task001_TCIA/imagesTs'
         #self.result_path = '/home/rakuest1/nnUNet_baseline/nnUNet_raw_data_base/nnUNet_raw_data/Task001_TCIA/result'
         #self.nii_seg_file = 'TCIA_001.nii.gz'
+        pass
 
     def convert_mha_to_nii(self, mha_input_path, nii_out_path):  #nnUNet specific
         img = SimpleITK.ReadImage(mha_input_path)
