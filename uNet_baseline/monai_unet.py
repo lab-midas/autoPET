@@ -1,4 +1,3 @@
-# based on https://github.com/Project-MONAI/tutorials/blob/master/3d_segmentation/spleen_segmentation_3d_lightning.ipynb
 from email.header import make_header
 import sys
 from monai.utils import set_determinism
@@ -34,10 +33,7 @@ import os
 import glob
 import numpy as np
 
-
 import nibabel as nib
-
-import SimpleITK as sitk
 
 
 class Net(pytorch_lightning.LightningModule):
@@ -61,9 +57,8 @@ class Net(pytorch_lightning.LightningModule):
     def forward(self, x):
         return self._model(x)
 
-    def prepare_data(self):
+    def prepare_data(self, data_dir):
         # set up the correct data path
-        data_dir = '/input/images/'
         images_pt = sorted(glob.glob(os.path.join(data_dir, "SUV*")))
         images_ct = sorted(glob.glob(os.path.join(data_dir, "CTres*")))
        
@@ -99,19 +94,15 @@ class Net(pytorch_lightning.LightningModule):
             ]
         )
 
-        
-        self.val_ds = Dataset(
-             data=val_files, transform=val_transforms)
+        self.val_ds = Dataset(data=val_files, transform=val_transforms)
 
-    
     def val_dataloader(self):
         val_loader = DataLoader(
             self.val_ds, batch_size=1, num_workers=4, collate_fn = list_data_collate)
         return val_loader
 
-def segment_PETCT(ckpt_path,data_dir,export_dir):
 
-    #ckpt_path='/home/ragatis1/Projects/tcia-lesions/notebooks/epoch=777-step=64573.ckpt'
+def segment_PETCT(ckpt_path, data_dir, export_dir):
     print("starting")
 
     net = Net.load_from_checkpoint(ckpt_path)
@@ -119,7 +110,7 @@ def segment_PETCT(ckpt_path,data_dir,export_dir):
 
     device = torch.device("cuda:1")
     net.to(device)
-    net.prepare_data()
+    net.prepare_data(data_dir)
 
     with torch.no_grad():
         for i, val_data in enumerate(net.val_dataloader()):
@@ -132,46 +123,18 @@ def segment_PETCT(ckpt_path,data_dir,export_dir):
             print("done inference")
 
             
-            PT = nib.load(os.path.join(data_dir,"SUV.nii.gz")) #needs to be loaded to recover nifti header and export mask
+            PT = nib.load(os.path.join(data_dir,"SUV.nii.gz"))  #needs to be loaded to recover nifti header and export mask
             pet_affine = PT.affine
             PT = PT.get_fdata()
             mask_export = nib.Nifti1Image(mask_out, pet_affine)
-            nib.save(mask_export, os.path.join(export_dir,"PRED.nii.gz"))
+            nib.save(mask_export, os.path.join(export_dir, "PRED.nii.gz"))
             print("done")
 
 
-def convert(mha_in_path,nii_out_path):
-    #mha_path = '/home/ragatis1/Projects/tcia-lesions/temp/SUV_0c13e4df10.mha'
-    #nii_path = '/home/ragatis1/Projects/tcia-lesions/temp/SUV_0c13e4df10.nii.gz'
+def run_inference(ckpt_path='/opt/algorithm/epoch=777-step=64573.ckpt', data_dir='/opt/algorithm/', export_dir='/output/'):
+    segment_PETCT(ckpt_path, data_dir, export_dir)
 
-    #input_image = sitk.ReadImage(mha_in_path)
-    input_image = sitk.ReadImage(mha_in_path)
-    writer = sitk.ImageFileWriter()
-    writer.SetFileName(nii_out_path)
-    writer.Execute(input_image)
-    print(nii_out_path,'converted')
-
-
-def run_inference():
-    
-    data_dir = '/opt/algorithm/' # attention: is hard-coded also in the Net Class above
-    #time.sleep(3600)
-    print(os.listdir('/input'))
-
-    ct_path  =  '/input/images/ct/af3b6605-c2b9-4067-8af5-8b85aafb2ae3.mha'
-    pet_path =  '/input/images/pet/e260efef-0a29-4c68-972e-9e573c740de5.mha'
-
-    print(ct_path)
-
-    convert(ct_path, os.path.join(data_dir,'CTres.nii.gz'))
-    convert(pet_path, os.path.join(data_dir,'SUV.nii.gz'))
-
-    ckpt_path= '/opt/algorithm/epoch=777-step=64573.ckpt'
-    export_dir = '/output/'
-    
-    segment_PETCT(ckpt_path,data_dir,export_dir)
 
 if __name__ == '__main__':
-    
     run_inference()
 

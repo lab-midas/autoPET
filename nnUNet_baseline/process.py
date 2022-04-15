@@ -189,5 +189,4 @@ class Autopet_baseline():  # SegmentationAlgorithm is not inherited in this clas
 
 if __name__ == "__main__":
     print("START")
-
     Autopet_baseline().process()
