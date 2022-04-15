@@ -9,7 +9,7 @@ echo $SCRIPTPATH
 VOLUME_SUFFIX=$(dd if=/dev/urandom bs=32 count=1 | md5sum | cut --delimiter=' ' --fields=1)
 MEM_LIMIT="30g"  # Maximum is currently 30g, configurable in your algorithm image settings on grand challenge
 
-docker volume create unet_basline-output-$VOLUME_SUFFIX
+docker volume create unet_baseline-output-$VOLUME_SUFFIX
 
 echo "Volume created, running evaluation"
 # Do not change any of the parameters to docker run, these are fixed
@@ -22,8 +22,8 @@ docker run    --memory="${MEM_LIMIT}" \
         --shm-size="128m" \
         --pids-limit="256" \
         -v $SCRIPTPATH/input/:/input/ \
-        -v unet_basline-output-$VOLUME_SUFFIX:/output/ \
-        unet_basline
+        -v unet_baseline-output-$VOLUME_SUFFIX:/output/ \
+        unet_baseline
 
 echo "Evaluation done, checking results"
 

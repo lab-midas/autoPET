@@ -2,7 +2,7 @@ import SimpleITK
 import numpy as np
 import monai_unet
 
-class Unet_basline():  # SegmentationAlgorithm is not inherited in this class anymore
+class Unet_baseline():  # SegmentationAlgorithm is not inherited in this class anymore
     def __init__(self):
         """
         Write your own input validators here
@@ -42,4 +42,4 @@ class Unet_basline():  # SegmentationAlgorithm is not inherited in this class an
         monai_unet.run_inference()
 
 if __name__ == "__main__":
-    Unet_basline().process()
+    Unet_baseline().process()

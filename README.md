@@ -13,6 +13,9 @@ Scripts for converting the database between DICOM, NiFTI, HDF5 and MHA formats.
 ## nnUNet baseline
 Baseline model for lesion segmentation: nnUNet trained with....
 
+## MONAI uNet baseline
+Baseline model for lesion segmentation: MONAI uNet trained with....
+
 ## References
 Challenge: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6362493.svg)](https://doi.org/10.5281/zenodo.6362493) <br/>
 Database: LINK_FOLLOWING_SOON 
