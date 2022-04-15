@@ -8,8 +8,7 @@ import os
 import subprocess
 import shutil
 
-#os.environ['nnUNet_raw_data_base'] = '/home/rakuest1/nnUNet_baseline/nnUNet_raw_data_base'
-#os.environ['RESULTS_FOLDER'] = '/home/rakuest1/nnUNet_baseline/checkpoints'  # /home/rakuest1/miniconda3/envs/autoPET/bin/
+
 #from nnunet.inference.predict import predict_from_folder
 from predict import predict_from_folder
 from nnunet.paths import default_plans_identifier, network_training_output_dir, default_cascade_trainer, default_trainer
@@ -32,11 +31,6 @@ class Autopet_baseline():  # SegmentationAlgorithm is not inherited in this clas
         self.result_path = '/opt/algorithm/nnUNet_raw_data_base/nnUNet_raw_data/Task001_TCIA/result'
         self.nii_seg_file = 'TCIA_001.nii.gz'
 
-        #self.input_path = '/home/rakuest1/Documents/autoPET/nnUNet_baseline/test/input/'
-        #self.output_path = '/home/rakuest1/tmp/output/'
-        #self.nii_path = '/home/rakuest1/nnUNet_baseline/nnUNet_raw_data_base/nnUNet_raw_data/Task001_TCIA/imagesTs'
-        #self.result_path = '/home/rakuest1/nnUNet_baseline/nnUNet_raw_data_base/nnUNet_raw_data/Task001_TCIA/result'
-        #self.nii_seg_file = 'TCIA_001.nii.gz'
         pass
 
     def convert_mha_to_nii(self, mha_input_path, nii_out_path):  #nnUNet specific
@@ -75,8 +69,6 @@ class Autopet_baseline():  # SegmentationAlgorithm is not inherited in this clas
         """
         Your algorithm goes here
         """
-        #os.environ['nnUNet_raw_data_base'] = '/home/rakuest1/nnUNet_baseline/nnUNet_raw_data_base'
-        #os.environ['RESULTS_FOLDER'] = '/home/rakuest1/nnUNet_baseline/checkpoints'  # /home/rakuest1/miniconda3/envs/autoPET/bin/
         #cproc = subprocess.run(f'nnUNet_predict -i {self.nii_path} -o {self.result_path} -t 001 -m 3d_fullres', shell=True, check=True)
         #os.system(f'nnUNet_predict -i {self.nii_path} -o {self.result_path} -t 001 -m 3d_fullres')
         print("nnUNet segmentation starting!")
