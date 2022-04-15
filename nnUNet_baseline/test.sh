@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
-# SCRIPTPATH="$(dirname "$( cd "$(dirname "$0")" ; pwd -P )")"
-SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
+SCRIPTPATH="$(dirname "$( cd "$(dirname "$0")" ; pwd -P )")"
+# SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
+echo $SCRIPTPATH
 
 ./build.sh
 
@@ -26,20 +27,11 @@ docker run -it --rm \
         -v autopet_baseline-output-$VOLUME_SUFFIX:/output/ \
         autopet_baseline
 
-echo $SCRIPTPATH
-
-#docker  run -it -v $SCRIPTPATH/test/input/:/input/ -v autopet_baseline-output-$VOLUME_SUFFIX:/output/ autopet_baseline
-
-#docker run --rm \
-#        -v $SCRIPTPATH/test/input/:/input/ \
-#        -v autopet_baseline-output-$VOLUME_SUFFIX:/output/ \
-#        autopet_baseline
-
 echo "Evaluation done, checking results"
 
 docker run --rm -it \
         -v autopet_baseline-output-$VOLUME_SUFFIX:/output/ \
-        -v $SCRIPTPATH/test/expected_output/:/expected_output/ \
+        -v $SCRIPTPATH/test/expected_output_nnUNet/:/expected_output/ \
         autopet_eval python3 -c """
 import SimpleITK as sitk
 import os
