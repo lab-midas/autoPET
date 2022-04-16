@@ -98,7 +98,7 @@ class Net(pytorch_lightning.LightningModule):
 
     def val_dataloader(self):
         val_loader = DataLoader(
-            self.val_ds, batch_size=1, num_workers=4, collate_fn = list_data_collate)
+            self.val_ds, batch_size=1, num_workers=0, collate_fn = list_data_collate)
         return val_loader
 
 
@@ -108,7 +108,7 @@ def segment_PETCT(ckpt_path, data_dir, export_dir):
     net = Net.load_from_checkpoint(ckpt_path)
     net.eval()
 
-    device = torch.device("cuda:1")
+    device = torch.device("cuda:0")
     net.to(device)
     net.prepare_data(data_dir)
 
@@ -127,8 +127,10 @@ def segment_PETCT(ckpt_path, data_dir, export_dir):
             pet_affine = PT.affine
             PT = PT.get_fdata()
             mask_export = nib.Nifti1Image(mask_out, pet_affine)
+            print(os.path.join(export_dir, "PRED.nii.gz"))
+
             nib.save(mask_export, os.path.join(export_dir, "PRED.nii.gz"))
-            print("done")
+            print("done writing")
 
 
 def run_inference(ckpt_path='/opt/algorithm/epoch=777-step=64573.ckpt', data_dir='/opt/algorithm/', export_dir='/output/'):

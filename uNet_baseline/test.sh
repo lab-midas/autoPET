@@ -21,19 +21,21 @@ docker run    --memory="${MEM_LIMIT}" \
         --gpus="all"  \
         --shm-size="128m" \
         --pids-limit="256" \
-        -v $SCRIPTPATH/input/:/input/ \
+        -v $SCRIPTPATH/test/input/:/input/ \
         -v unet_baseline-output-$VOLUME_SUFFIX:/output/ \
         unet_baseline
 
 echo "Evaluation done, checking results"
 
 docker run --rm -it \
-        -v autopet_baseline-output-$VOLUME_SUFFIX:/output/ \
+        -v unet_baseline-output-$VOLUME_SUFFIX:/output/ \
         -v $SCRIPTPATH/test/expected_output_uNet/:/expected_output/ \
         autopet_eval python3 -c """
 import SimpleITK as sitk
 import os
+print('Start')
 file = os.listdir('/output/images/automated-petct-lesion-segmentation')[0]
+print(file)
 output = sitk.GetArrayFromImage(sitk.ReadImage(os.path.join('/output/images/automated-petct-lesion-segmentation/', file)))
 expected_output = sitk.GetArrayFromImage(sitk.ReadImage('/expected_output/images/TCIA_001.nii.gz'))
 mse = sum(sum(sum((output - expected_output) ** 2)))

@@ -4,8 +4,8 @@ FROM python:3.9-slim
 
 RUN groupadd -r algorithm && useradd -m --no-log-init -r -g algorithm algorithm
 
-RUN mkdir -p /opt/algorithm /input /output \
-    && chown algorithm:algorithm /opt/algorithm /input /output
+RUN mkdir -p /opt/algorithm /input /output/images/automated-petct-lesion-segmentation \
+    && chown -R algorithm:algorithm /opt/algorithm /input /output
 
 USER algorithm
 
