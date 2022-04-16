@@ -64,7 +64,7 @@ class Unet_baseline():  # SegmentationAlgorithm is not inherited in this class a
         print('Start processing')
         uuid = self.load_inputs()
         print('Start prediction')
-        monai_unet.run_inference(self.ckpt_path, self.nii_path, self.export_dir)
+        monai_unet.run_inference(self.ckpt_path, self.nii_path, self.output_path)
         print('Start output writing')
         self.write_outputs(uuid)
 
