@@ -13,7 +13,6 @@ class Unet_baseline():  # SegmentationAlgorithm is not inherited in this class a
         self.input_path = '/input/'  # according to the specified grand-challenge interfaces
         self.output_path = '/output/images/automated-petct-lesion-segmentation/'  # according to the specified grand-challenge interfaces
         self.nii_path = '/opt/algorithm/'  # where to store the nii files
-        self.export_dir = '/output/'
         self.ckpt_path = '/opt/algorithm/epoch=777-step=64573.ckpt'
         pass
 
@@ -46,7 +45,7 @@ class Unet_baseline():  # SegmentationAlgorithm is not inherited in this class a
         Check https://grand-challenge.org/algorithms/interfaces/
         """
         os.makedirs(os.path.dirname(self.output_path), exist_ok=True)
-        shutil.copyfile(os.path.join(self.export_dir, "PRED.nii.gz"),
+        shutil.move(os.path.join(self.output_path, "PRED.nii.gz"),
                         os.path.join(self.output_path, uuid + ".nii.gz"))
         print('Output written to: ' + self.output_path)
     

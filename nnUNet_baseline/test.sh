@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/bash
 
 SCRIPTPATH="$(dirname "$( cd "$(dirname "$0")" ; pwd -P )")"
 # SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
