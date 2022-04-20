@@ -11,10 +11,10 @@ Küstner, T. & Gatidis, S. TCIA 2022
 Scripts for converting the database between DICOM, NiFTI, HDF5 and MHA formats.
 
 ## nnUNet baseline
-Baseline model for lesion segmentation: nnUNet trained with....
+Baseline model for lesion segmentation: In this baseline model, the nnUNet framework (https://github.com/MIC-DKFZ/nnUNet) was used for training using the 3D fullres configuration with 16 GB of VRAM. PET (SUV) and resampled CT volumes were used as model input. The number of epochs was set to 1,000; the initial learning rate to 1E-4. Training was performed with 5-fold cross validation.  
 
 ## MONAI uNet baseline
-Baseline model for lesion segmentation: MONAI uNet trained with....
+Baseline model for lesion segmentation: In this proof-of-concept model a standard 3D uNet model as provided within the MONAI framework (https://monai.io) was adapted to dual-channel input (PET (SUV) and resampled CT volumes). Input patches were of size (128, 128, 32), batch size was set to 12, learning rate 1e-4 using Adam, maximum number of epochs set to 800. 
 
 ## References
 Challenge: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6362493.svg)](https://doi.org/10.5281/zenodo.6362493) <br/>
