@@ -1,9 +1,6 @@
 import SimpleITK
 import time
 import os
-#os.environ["nnUNet_raw_data_base"] = 'opt/algorithm/nnUNet_raw_data_base'
-#os.environ["RESULTS_FOLDER"] = 'opt/algorithm/checkpoints'
-#os.environ["MKL_SERVICE_FORCE_INTEL"] = "1"
 
 import subprocess
 import shutil
@@ -41,6 +38,19 @@ class Autopet_baseline():  # SegmentationAlgorithm is not inherited in this clas
         img = SimpleITK.ReadImage(nii_input_path)
         SimpleITK.WriteImage(img, mha_out_path, True)
 
+    def check_gpu(self):
+        """
+        Check if GPU is available
+        """
+        print('Checking GPU availability')
+        is_available = torch.cuda.is_available()
+        print('Available: ' + str(is_available))
+        print(f'Device count: {torch.cuda.device_count()}')
+        if is_available:
+            print(f'Current device: {torch.cuda.current_device()}')
+            print('Device name: ' + torch.cuda.get_device_name(0))
+            print('Device memory: ' + str(torch.cuda.get_device_properties(0).total_memory))
+
     def load_inputs(self):
         """
         Read from /input/
@@ -62,8 +72,8 @@ class Autopet_baseline():  # SegmentationAlgorithm is not inherited in this clas
         Check https://grand-challenge.org/algorithms/interfaces/
         """
         os.makedirs(os.path.dirname(self.output_path), exist_ok=True)
-        shutil.copyfile(os.path.join(self.result_path, self.nii_seg_file), os.path.join(self.output_path, uuid+".nii.gz"))
-        print('Output written to: ' + self.output_path)
+        self.convert_nii_to_mha(os.path.join(self.result_path, self.nii_seg_file), os.path.join(self.output_path, uuid + ".mha"))
+        print('Output written to: ' + os.path.join(self.output_path, uuid + ".mha"))
 
     def predict(self):
         """
@@ -179,6 +189,7 @@ class Autopet_baseline():  # SegmentationAlgorithm is not inherited in this clas
         Read inputs from /input, process with your algorithm and write to /output
         """
         # process function will be called once for each test sample
+        self.check_gpu()
         print('Start processing')
         uuid = self.load_inputs()
         print('Start prediction')

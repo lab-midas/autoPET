@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 SCRIPTPATH="$(dirname "$( cd "$(dirname "$0")" ; pwd -P )")"
-# SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
+SCRIPTPATHCURR ="$( cd "$(dirname "$0")" ; pwd -P )"
 echo $SCRIPTPATH
 
 ./build.sh
@@ -28,7 +28,7 @@ docker run -it --rm \
         autopet_baseline
 
 echo "Evaluation done, checking results"
-
+docker build -f Dockerfile.eval -t autopet_eval .
 docker run --rm -it \
         -v autopet_baseline-output-$VOLUME_SUFFIX:/output/ \
         -v $SCRIPTPATH/test/expected_output_nnUNet/:/expected_output/ \

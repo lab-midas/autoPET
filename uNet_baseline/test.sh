@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 SCRIPTPATH="$(dirname "$( cd "$(dirname "$0")" ; pwd -P )")"
-# SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
+SCRIPTPATHCURR="$( cd "$(dirname "$0")" ; pwd -P )"
 echo $SCRIPTPATH
 
 ./build.sh
@@ -27,6 +27,7 @@ docker run --rm \
         unet_baseline
 
 echo "Evaluation done, checking results"
+docker build -f Dockerfile.eval -t unet_eval .
 
 docker run --rm -it \
         -v unet_baseline-output-$VOLUME_SUFFIX:/output/ \
