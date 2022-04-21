@@ -10,6 +10,7 @@ import numpy as np
 import nilearn.image
 import shutil
 import pydicom
+import sys
 from nibabel.orientations import ornt_transform, axcodes2ornt, inv_ornt_aff, apply_orientation, io_orientation, aff2axcodes
 
 

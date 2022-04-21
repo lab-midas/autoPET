@@ -16,6 +16,9 @@ class Unet_baseline():  # SegmentationAlgorithm is not inherited in this class a
         self.output_path = '/output/images/automated-petct-lesion-segmentation/'  # according to the specified grand-challenge interfaces
         self.nii_path = '/opt/algorithm/'  # where to store the nii files
         self.ckpt_path = '/opt/algorithm/epoch=777-step=64573.ckpt'
+
+        if not os.path.exists(self.output_path):
+            os.makedirs(self.output_path)
         pass
 
     def convert_mha_to_nii(self, mha_input_path, nii_out_path):
