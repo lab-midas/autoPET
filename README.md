@@ -2,9 +2,11 @@
 Repository for codes associated with autoPET machine learning challenge: <br/> 
 [autopet.grand-challenge.org](https://autopet.grand-challenge.org/) 
 
-If you use the data associated to this challenge, please cite:
+If you use the data associated to this challenge, please cite: <a href="https://doi.org/10.7937/gkr0-xv29"><img src="https://img.shields.io/badge/DOI-10.7937%2Fgkr0--xv29-blue"></a>
+
 ```
-Küstner, T. & Gatidis, S. TCIA 2022
+Gatidis S, Kuestner T. A whole-body FDG-PET/CT dataset with manually annotated tumor lesions (FDG-PET-CT-Lesions) 
+[Dataset]. The Cancer Imaging Archive, 2022. DOI: 10.7937/gkr0-xv29
 ```
 
 ## Data conversion
@@ -18,4 +20,4 @@ Baseline model for lesion segmentation: In this proof-of-concept model a standar
 
 ## References
 Challenge: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6362493.svg)](https://doi.org/10.5281/zenodo.6362493) <br/>
-Database: LINK_FOLLOWING_SOON 
+Database: <a href="https://doi.org/10.7937/gkr0-xv29"><img src="https://img.shields.io/badge/DOI-10.7937%2Fgkr0--xv29-blue"></a>
