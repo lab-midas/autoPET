@@ -94,6 +94,11 @@ def calculate_suv_factor(dcm_path):
     half_life = ds.RadiopharmaceuticalInformationSequence[0].RadionuclideHalfLife
     acq_time = ds.AcquisitionTime
     weight = ds.PatientWeight
+    # decay correct the acquisition to the actual series start time
+    # for backward compatibility and consistency to the challenge data,
+    # we keep the old equation, but future implementations should adjust this 
+    #if ds.RadiopharmaceuticalInformationSequence[0].DecayCorrection == 'START':
+    #   acq_time = ds.SeriesTime
     time_diff = conv_time(acq_time) - conv_time(start_time)
     act_dose = total_dose * 0.5 ** (time_diff / half_life)
     suv_factor = 1000 * weight / act_dose
